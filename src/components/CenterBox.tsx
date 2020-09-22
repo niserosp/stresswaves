@@ -1,4 +1,4 @@
-import { Box, defaultProps } from 'grommet'
+import { Box } from 'grommet'
 import React, { ReactNode } from 'react'
 
 export default function (props: { children?: ReactNode }) {

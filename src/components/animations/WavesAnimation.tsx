@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
-import { animated, config, InterpolationConfig, useSpring } from 'react-spring'
-import * as d3 from 'd3-shape'
 import { scaleLinear } from 'd3-scale'
+import * as d3 from 'd3-shape'
 import _ from 'lodash'
+import React from 'react'
+import { animated, config, useSpring } from 'react-spring'
 import useInterval from 'react-useinterval'
 
 export default function () {

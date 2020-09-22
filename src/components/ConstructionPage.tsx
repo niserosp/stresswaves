@@ -1,9 +1,9 @@
-import { Box, Main, Stack } from 'grommet'
+import { Box } from 'grommet'
 import React, { ComponentProps } from 'react'
 import styled from 'styled-components'
-import CenterBox from './CenterBox'
 import ConstructionTextAnimation from './animations/ConstructionTextAnimation'
 import WavesAnimation from './animations/WavesAnimation'
+import CenterBox from './CenterBox'
 
 export default function () {
     return (

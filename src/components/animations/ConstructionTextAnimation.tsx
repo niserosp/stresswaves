@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Box, Text } from 'grommet'
-import { animated, config, useSpring, useTransition } from 'react-spring'
+import { Text } from 'grommet'
+import React, { useState } from 'react'
+import { animated, config, useSpring } from 'react-spring'
 import useInterval from 'react-useinterval'
 
 export default () => {
