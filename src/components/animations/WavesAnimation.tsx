@@ -1,6 +1,5 @@
 import { scaleLinear } from 'd3-scale'
 import * as d3 from 'd3-shape'
-import { Box } from 'grommet'
 import _ from 'lodash'
 import React from 'react'
 import { animated, config, useTrail } from 'react-spring'
