@@ -1,7 +1,7 @@
 import { scaleLinear } from 'd3-scale'
 import * as d3 from 'd3-shape'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { animated, config, useSpring, useTrail } from 'react-spring'
 import { useHover } from 'react-use-gesture'
 import useInterval from 'react-useinterval'
