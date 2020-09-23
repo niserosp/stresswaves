@@ -1,24 +1,38 @@
 import { scaleLinear } from 'd3-scale'
 import * as d3 from 'd3-shape'
+import { Box } from 'grommet'
 import _ from 'lodash'
 import React from 'react'
-import { animated, config, useSpring } from 'react-spring'
+import { animated, config, useTrail } from 'react-spring'
 import useInterval from 'react-useinterval'
 
 export default function () {
-    const d = useWavesAnimation()
-    return <svg viewBox='0 0 200 200'><animated.path transform='translate(50, 100)' d={d} style={{ fill: 'none', stroke: '#FFF', strokeMiterlimit: 10 }} /></svg>
+    const trail = useWavesAnimation()
+    return (
+        <svg viewBox='0 0 200 200'>
+            {trail.map(({ d }, index) => {
+                const [x, y] = [25 + index * 3, 50 - index * 3]
+                return (
+                    <animated.path
+                        transform={`matrix(1, 0.2, -0.2, 1, ${x}, ${y})`}
+                        d={d}
+                        style={{ fill: 'none', stroke: '#FFF', strokeMiterlimit: 10 }}
+                    />
+                )
+            })}
+        </svg>
+    )
 }
 
 function useWavesAnimation() {
-    const [{ pathData }, setSpring] = useSpring(() => ({
-        pathData: randomWave(),
-        config: { native: true, ...config.molasses }
+    const [trail, setSpring] = useTrail<{ d: string }>(6, () => ({
+        d: randomWave(),
+        config: { native: true, velocity: 100, ...config.stiff }
     }))
 
-    useInterval(() => { setSpring({ pathData: randomWave() }) }, 200)
+    useInterval(() => { setSpring({ d: randomWave() }) }, 200)
 
-    return pathData
+    return trail
 }
 
 function randomWave(): string {
@@ -26,7 +40,7 @@ function randomWave(): string {
 
     // usage of `as`: guaranteed to be that type after call to `reject`
     let data = _.reject(_.zip(_.range(16), yPoints), d => _.some(d, _.isUndefined)) as [number, number][]
-    const yScale = scaleLinear().domain([-1, 1]).range([-50, 50])
+    const yScale = scaleLinear().domain([-1, 1]).range([-25, 25])
     const xScale = scaleLinear().domain([-10, 10]).range([-100, 100])
     data = data.map(([x, y]) => [xScale(x), yScale(y)])
 
