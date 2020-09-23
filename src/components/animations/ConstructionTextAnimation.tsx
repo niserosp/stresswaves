@@ -7,7 +7,7 @@ export default () => {
     const text = useCycleText(words, 4000)
     const [animatedText, style] = useTextFadeTransition(text)
 
-    return <AnimatedText style={style}>{animatedText}</AnimatedText>
+    return <AnimatedText color='accent-1' style={style}>{animatedText}</AnimatedText>
 }
 
 const AnimatedText = animated(Text)

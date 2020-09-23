@@ -8,15 +8,10 @@ import CenterBox from './CenterBox'
 export default function () {
     return (
         <CenterBox>
-            <StyledMain align='center' as='main'>
+            <Box width='large' height='medium' align='center' as='main'>
                 <WavesAnimation />
                 <ConstructionTextAnimation />
-            </StyledMain>
+            </Box>
         </CenterBox>
     )
 }
-
-const StyledMain = styled(Box) <ComponentProps<typeof Box>>`
-  min-width: 75vw;
-  min-height: 40vh;
-`

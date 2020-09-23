@@ -14,7 +14,7 @@ export default function () {
     })
 
     return (
-        <svg {...hoverBindings()} viewBox='-50 -100 200 200'>
+        <svg {...hoverBindings()} viewBox='-30 -75 200 200'>
             {trail.map(({ d }, index) => {
                 const transform = yScale.interpolate(y => `matrix(1, 0.2, -0.2, 1, 0, ${y * (index - 3)})`)
                 return (
@@ -22,7 +22,7 @@ export default function () {
                         transform={transform}
                         d={d}
                         key={index}
-                        style={{ fill: 'none', stroke: '#FFF', strokeMiterlimit: 10 }}
+                        style={{ fill: 'none', stroke: '#E7EED9', strokeMiterlimit: 10, strokeWidth: 0.2 }}
                     />
                 )
             })}

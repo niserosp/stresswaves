@@ -9,6 +9,9 @@ const theme: ThemeType = {
       "accent-1": '#76B7B6',
       "accent-2": '#76B7B6',
       "accent-3": '#E7EED9'
+    },
+    font: {
+      family: 'Quicksand'
     }
   }
 }
