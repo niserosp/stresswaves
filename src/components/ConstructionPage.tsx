@@ -3,7 +3,7 @@ import React, { Suspense, useState } from 'react'
 import { useHover } from 'react-use-gesture'
 import ConstructionTextAnimation from './animations/ConstructionTextAnimation'
 import CenterBox from './CenterBox'
-import { SkewLoader } from 'react-spinners'
+import { CircleLoader } from 'react-spinners'
 
 export default function () {
     const LazyWaves = React.lazy(() => import('./animations/svgElementAnimations/WavesAnimation'))
@@ -14,8 +14,8 @@ export default function () {
 
     return (
         <CenterBox>
-            <Box width='large' height='medium' align='center' as='main' {...hoverBindings()}>
-                <Suspense fallback={<SkewLoader color='white' />}>
+            <Box width='large' height='medium' justify='center' align='center' as='main' {...hoverBindings()}>
+                <Suspense fallback={<CircleLoader color='white' />}>
                     <svg viewBox='-25 -75 200 200' transform='matrix(1, 0.2, 0.2, 1, 0, 0)'>
                         <LazyWaves pullApart={hovering} />
                         <g transform='translate(4, -18)'>
