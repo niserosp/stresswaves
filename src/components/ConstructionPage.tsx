@@ -1,11 +1,11 @@
-import { Box, Stack } from 'grommet'
-import React, { useEffect, useState } from 'react'
-import ConstructionTextAnimation from './animations/ConstructionTextAnimation'
-import useWavesAnimation from './animations/svgElementAnimations/WavesAnimation'
-import CenterBox from './CenterBox'
-import useEmojiAnimation from './animations/svgElementAnimations/EmojiAnimation'
+import { Box } from 'grommet'
+import React, { useState } from 'react'
 import { useHover } from 'react-use-gesture'
 import { mergeBindings } from '../lib/bindings'
+import ConstructionTextAnimation from './animations/ConstructionTextAnimation'
+import useEmojiAnimation from './animations/svgElementAnimations/EmojiAnimation'
+import useWavesAnimation from './animations/svgElementAnimations/WavesAnimation'
+import CenterBox from './CenterBox'
 
 export default function () {
     const [Waves, waveHoverBindings] = useWavesAnimation()

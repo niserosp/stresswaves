@@ -16,14 +16,15 @@ function useTextFadeTransition(incoming: string) {
     const [style, setSpring] = useSpring(() => ({ opacity: 1, config: { native: true, ...config.gentle } }))
     const [current, setCurrent] = useState(incoming)
 
-    const beginFadeIn = () => {
-        setCurrent(incoming)
-        setSpring({ opacity: 1 })
-    }
 
     useEffect(() => {
+        const beginFadeIn = () => {
+            setCurrent(incoming)
+            setSpring({ opacity: 1 })
+        }
+
         setSpring({ opacity: 0, onRest: beginFadeIn })
-    }, [setSpring, incoming])
+    }, [setSpring, incoming, setCurrent])
 
 
     return [current, style] as [typeof current, typeof style]
