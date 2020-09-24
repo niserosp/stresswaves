@@ -6,17 +6,17 @@ import { animated, config, useSpring, useTrail } from 'react-spring'
 import { useHover } from 'react-use-gesture'
 import useInterval from 'react-useinterval'
 
-export default function () {
+export default function useWavesAnimationComponent() {
     const [trail, freezeAnimation] = useWavesAnimation()
     const [yScale, setPullApart] = useWavesPullApart(freezeAnimation)
     const hoverBindings = useHover(event => {
         setPullApart(event.hovering)
     })
 
-    return (
-        <svg {...hoverBindings()} viewBox='-30 -75 200 200'>
+    const Waves = () => (
+        <g>
             {trail.map(({ d }, index) => {
-                const transform = yScale.interpolate(y => `matrix(1, 0.2, -0.2, 1, 0, ${y * (index - 3)})`)
+                const transform = yScale.interpolate(y => `translate(0, ${y * (index - 3)})`)
                 return (
                     <animated.path
                         transform={transform}
@@ -26,8 +26,10 @@ export default function () {
                     />
                 )
             })}
-        </svg>
+        </g>
     )
+
+    return [Waves, hoverBindings] as [typeof Waves, typeof hoverBindings]
 }
 
 function useWavesAnimation() {

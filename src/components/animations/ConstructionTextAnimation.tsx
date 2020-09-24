@@ -1,13 +1,13 @@
 import { Text } from 'grommet'
-import React, { useState } from 'react'
+import React, { CSSProperties, useEffect, useState } from 'react'
 import { animated, config, useSpring } from 'react-spring'
 import useInterval from 'react-useinterval'
 
-export default () => {
+export default (props: { style?: CSSProperties }) => {
     const text = useCycleText(words, 4000)
     const [animatedText, style] = useTextFadeTransition(text)
 
-    return <AnimatedText color='accent-1' style={style}>{animatedText}</AnimatedText>
+    return <AnimatedText color='accent-1' style={{ ...props.style, ...style }}>{animatedText}</AnimatedText>
 }
 
 const AnimatedText = animated(Text)
@@ -21,7 +21,9 @@ function useTextFadeTransition(incoming: string) {
         setSpring({ opacity: 1 })
     }
 
-    setSpring({ opacity: 0, onRest: beginFadeIn })
+    useEffect(() => {
+        setSpring({ opacity: 0, onRest: beginFadeIn })
+    }, [setSpring, incoming])
 
 
     return [current, style] as [typeof current, typeof style]
@@ -36,4 +38,4 @@ function useCycleText(strings: string[], interval: number) {
     return strings[textIndex]
 }
 
-const words = ["building", "fluctuating", "ruminating", "somethingsomething"]
+const words = ["writing and more", "coming sometime", "hover above"]
