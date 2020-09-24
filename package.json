@@ -26,6 +26,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
+    "react-spinners": "^0.9.0",
     "react-spring": "^8.0.27",
     "react-use-gesture": "^7.0.16",
     "react-useinterval": "^1.0.2",
@@ -33,6 +34,7 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -52,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "source-map-explorer": "^2.5.0"
   }
 }

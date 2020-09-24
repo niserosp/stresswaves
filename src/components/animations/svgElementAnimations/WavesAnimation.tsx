@@ -1,19 +1,15 @@
 import { scaleLinear } from 'd3-scale'
 import * as d3 from 'd3-shape'
 import _ from 'lodash'
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { animated, config, useSpring, useTrail } from 'react-spring'
-import { useHover } from 'react-use-gesture'
 import useInterval from 'react-useinterval'
 
-export default function useWavesAnimationComponent() {
-    const [trail, freezeAnimation] = useWavesAnimation()
-    const [yScale, setPullApart] = useWavesPullApart(freezeAnimation)
-    const hoverBindings = useHover(event => {
-        setPullApart(event.hovering)
-    })
+export default function useWavesAnimationComponent(props: { pullApart: boolean }) {
+    const trail = useWavesAnimation(!props.pullApart)
+    const yScale = useWavesPullApart(props.pullApart)
 
-    const Waves = () => (
+    return (
         <g>
             {trail.map(({ d }, index) => {
                 const transform = yScale.interpolate(y => `translate(0, ${y * (index - 3)})`)
@@ -28,11 +24,9 @@ export default function useWavesAnimationComponent() {
             })}
         </g>
     )
-
-    return [Waves, hoverBindings] as [typeof Waves, typeof hoverBindings]
 }
 
-function useWavesAnimation() {
+function useWavesAnimation(active: boolean) {
     const defaultConfig = { native: true, ...config.wobbly }
     const comingToRestConfig = { native: true, ...config.gentle }
 
@@ -41,18 +35,16 @@ function useWavesAnimation() {
         config: defaultConfig
     }))
 
-    const [freeze, setFreeze] = useState<boolean>(false)
-
     useInterval(() => {
-        if (freeze) {
-            setSpring({ d: noWave, config: comingToRestConfig })
-        } else {
+        if (active) {
             setSpring({ d: randomWave(), config: defaultConfig })
+        } else {
+            setSpring({ d: noWave, config: comingToRestConfig })
         }
     }, 200)
 
 
-    return [trail, setFreeze] as [typeof trail, typeof setFreeze]
+    return trail
 }
 
 function randomWave(): string {
@@ -80,23 +72,21 @@ function randomPoints(n: number): number[] {
     return new Array(n).fill(null).map(() => _.random(-1, 1))
 }
 
-function useWavesPullApart(freezeAnimation: (freeze: boolean) => void) {
+function useWavesPullApart(active: boolean) {
     const [{ yScale }, setSpring] = useSpring(() => ({
         yScale: 1,
         config: config.stiff
     }))
 
-    const setPullApart = (active: boolean) => {
-        freezeAnimation(active)
-
+    useEffect(() => {
         if (active) {
             setSpring({ yScale: -30 })
         } else {
             setSpring({ yScale: 3 })
         }
-    }
+    }, [setSpring, active])
 
-    return [yScale, setPullApart] as [typeof yScale, typeof setPullApart]
+    return yScale
 }
 
 const noWave = waveToPath(scaleWave(waveFromYPoints(new Array(16).fill(0))))

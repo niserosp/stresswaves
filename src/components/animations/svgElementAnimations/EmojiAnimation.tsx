@@ -15,16 +15,14 @@ import whale from './emojis/whale.png'
 
 const emojis = [linkEmoji, loveLetterEmoji, whale, urn, masks, key, clothes, apple, anchor, ice].map(item => ({ path: item }))
 
-export default () => {
-    const [emojiElements, setActive] = useRandomFadeInEmojis(emojis)
+export default (props: { active: boolean }) => {
+    const emojiElements = useRandomFadeInEmojis(emojis, props.active)
 
-    const EmojiShelves = () => (
+    return (
         <Shelves>
             {emojiElements}
         </Shelves>
     )
-
-    return [EmojiShelves, setActive] as [typeof EmojiShelves, typeof setActive]
 }
 
 function Shelves(props: { children?: ReactNode }) {
@@ -48,25 +46,25 @@ function Shelf(props: { y?: number, children?: ReactNode }) {
 
 type Emoji = { path: string }
 
-function useRandomFadeInEmojis(emojis: Emoji[]) {
-    const [springs, setActive] = useRandomFadeInSprings(emojis.length)
+function useRandomFadeInEmojis(emojis: Emoji[], active: boolean) {
+    const springs = useRandomFadeInSprings(emojis.length, active)
 
     const emojiElements = _.zip(springs, emojis)
         .map(([styleProps, emoji]) => emoji && <AnimatedEmoji key={emoji.path} style={styleProps} emoji={emoji} />)
-    return [emojiElements, setActive] as [typeof emojiElements, typeof setActive]
+
+    return emojiElements
 }
 
 function AnimatedEmoji(props: { emoji: Emoji } & Omit<ComponentProps<typeof animated.image>, 'href'>) {
     return <animated.image height={0.5} width={0.5} {...props} href={props.emoji.path} />
 }
 
-function useRandomFadeInSprings(n: number) {
-    const [active, setActive] = useState(false)
+function useRandomFadeInSprings(n: number, active: boolean) {
     const [springs, setSprings] = useSprings(n, index => ({ opacity: 0, config: { native: true } }))
 
     useRandomlyFadeInSpring(n, setSprings as any, active)
 
-    return [springs, setActive] as [typeof springs, typeof setActive]
+    return springs
 }
 
 function useRandomlyFadeInSpring(numSprings: number, setSprings: (callback: (index: number) => ({ opacity: number })) => void, active: boolean) {
