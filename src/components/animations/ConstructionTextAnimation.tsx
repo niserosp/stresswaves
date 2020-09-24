@@ -2,6 +2,7 @@ import { Text } from 'grommet'
 import React, { CSSProperties, useEffect, useState } from 'react'
 import { animated, config, useSpring } from 'react-spring'
 import useInterval from 'react-useinterval'
+import { isMobile } from 'react-device-detect'
 
 export default (props: { style?: CSSProperties }) => {
     const text = useCycleText(words, 4000)
@@ -39,4 +40,4 @@ function useCycleText(strings: string[], interval: number) {
     return strings[textIndex]
 }
 
-const words = ["writing and more", "coming sometime", "hover above"]
+const words = ["writing and more", "coming sometime", `${isMobile ? 'tap' : 'hover'} above`]
