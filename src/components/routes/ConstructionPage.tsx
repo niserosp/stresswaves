@@ -2,11 +2,11 @@ import { Box } from 'grommet'
 import React, { Suspense, useState } from 'react'
 import { CircleLoader } from 'react-spinners'
 import { useDrag } from 'react-use-gesture'
-import ConstructionTextAnimation from './animations/ConstructionTextAnimation'
-import CenterBox from './CenterBox'
+import ConstructionTextAnimation from '../animations/ConstructionTextAnimation'
+import CenterBox from '../CenterBox'
 
-const LazyWaves = React.lazy(() => import('./animations/svgElementAnimations/WavesAnimation'))
-const LazyEmojis = React.lazy(() => import('./animations/svgElementAnimations/EmojiAnimation'))
+const LazyWaves = React.lazy(() => import('../animations/svgElementAnimations/WavesAnimation'))
+const LazyEmojis = React.lazy(() => import('../animations/svgElementAnimations/EmojiAnimation'))
 
 export default function () {
     const [pageMode, bindings] = usePageMode()
@@ -27,6 +27,7 @@ export default function () {
                 </Suspense>
             </Box>
         </CenterBox>
+
     )
 }
 

@@ -8,7 +8,7 @@ export default (props: { style?: CSSProperties }) => {
     const text = useCycleText(words, 4000)
     const [animatedText, style] = useTextFadeTransition(text)
 
-    return <AnimatedText color='accent-1' style={{ ...props.style, ...style }}>{animatedText}</AnimatedText>
+    return <AnimatedText style={{ ...props.style, ...style }}>{animatedText}</AnimatedText>
 }
 
 const AnimatedText = animated(Text)
