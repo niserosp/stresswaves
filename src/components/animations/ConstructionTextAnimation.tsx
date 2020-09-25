@@ -40,4 +40,4 @@ function useCycleText(strings: string[], interval: number) {
     return strings[textIndex]
 }
 
-const words = ["writing and more", "coming sometime", `${isMobile ? 'tap' : 'hover'} above`]
+const words = ["writing and more", "coming sometime", `${isMobile ? 'tap' : 'click'} above`]
