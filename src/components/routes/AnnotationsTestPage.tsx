@@ -1,6 +1,6 @@
 import { Heading, Paragraph, Text } from 'grommet'
 import React from 'react'
-import { Annotation, AnnotationView } from '../audio/annotations'
+import { Annotation } from '../audio/annotations'
 import CenterBox from '../CenterBox'
 
 export default () => {

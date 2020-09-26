@@ -1,7 +1,5 @@
-import { Box, defaultProps, Stack, Text } from 'grommet'
-import React, { ComponentProps, ReactNode, useCallback, useEffect } from 'react'
-import { useDrag, useGesture, useHover } from 'react-use-gesture'
-import { ReactEventHandlers } from 'react-use-gesture/dist/types'
+import { Box, Stack } from 'grommet'
+import React, { ComponentProps, ReactNode } from 'react'
 import styled from 'styled-components'
 import { ClipResult, ClipState, isActive, useClip } from '../../audio/clips'
 

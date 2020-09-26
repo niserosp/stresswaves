@@ -1,7 +1,7 @@
-import { Grommet, Text, ThemeType } from 'grommet';
+import { Grommet, ThemeType } from 'grommet';
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Routes from './components/routes';
-import { BrowserRouter as Router } from 'react-router-dom'
 
 const theme: ThemeType = {
   global: {
