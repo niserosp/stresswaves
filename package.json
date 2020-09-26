@@ -9,6 +9,7 @@
     "@types/d3-interpolate-path": "^2.0.0",
     "@types/d3-scale": "^2.2.0",
     "@types/d3-shape": "^1.3.2",
+    "@types/howler": "^2.2.1",
     "@types/jest": "^24.9.1",
     "@types/lodash": "^4.14.161",
     "@types/mathjs": "^6.0.5",
@@ -17,11 +18,14 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
+    "@types/react-test-renderer": "^16.9.3",
     "@types/styled-components": "^5.1.3",
     "d3-interpolate-path": "^2.2.1",
     "d3-scale": "^3.2.2",
     "d3-shape": "^2.0.0",
     "grommet": "^2.15.0",
+    "howler": "^2.2.0",
+    "immer": "^7.0.9",
     "lodash": "^4.17.20",
     "mathjs": "^7.2.0",
     "paths-js": "^0.4.11",
@@ -33,10 +37,12 @@
     "react-scripts": "3.4.3",
     "react-spinners": "^0.9.0",
     "react-spring": "^8.0.27",
+    "react-test-renderer": "^16.13.1",
     "react-use-gesture": "^7.0.16",
     "react-useinterval": "^1.0.2",
     "styled-components": "^5.2.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "use-sound": "^1.0.2"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -61,6 +67,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^3.4.1",
     "source-map-explorer": "^2.5.0"
   }
 }

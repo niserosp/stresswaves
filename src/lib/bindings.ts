@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { DOMElement, ElementRef, Ref, RefObject, useEffect } from "react";
 import { ReactEventHandlers } from "react-use-gesture/dist/types";
 
 export function mergeBindings(...bindings: ReactEventHandlers[]): ReactEventHandlers {
