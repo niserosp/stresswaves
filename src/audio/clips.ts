@@ -5,7 +5,7 @@ import useSound from 'use-sound'
 import { ExposedData, PlayFunction } from 'use-sound/dist/types'
 
 
-export type ClipStatus = 'playing' | 'paused'
+export type ClipStatus = 'playing' | 'paused' | 'loading'
 
 export type ClipState = {
     status: ClipStatus,
@@ -15,7 +15,10 @@ export type ClipState = {
 export type ClipResult = ClipState & { play: PlayFunction } & Pick<ExposedData, 'pause' | 'stop'>
 
 export function useClip(): ClipResult {
-    const [play, { pause, stop, isPlaying, sound }] = useSound('/test.mp3', { html5: true, preload: true } as any)
+    const [loaded, setLoaded] = useState(false)
+    const [play, { pause, stop, isPlaying, sound }] = useSound('/test.mp3', {
+        html5: true, preload: true, onload: () => setLoaded(true)
+    } as any)
 
     const progress = useAudioProgress(sound)
 
@@ -23,7 +26,7 @@ export function useClip(): ClipResult {
         play,
         pause,
         stop,
-        status: isPlaying ? 'playing' : 'paused',
+        status: isPlaying ? (loaded ? 'playing' : 'loading') : 'paused',
         progress
     }
 }

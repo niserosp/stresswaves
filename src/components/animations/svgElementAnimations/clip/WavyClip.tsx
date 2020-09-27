@@ -2,15 +2,17 @@ import { scaleLinear } from 'd3-scale'
 import * as d3 from 'd3-shape'
 import { timer } from 'd3-timer'
 import _ from 'lodash'
-import React, { useEffect, useRef } from 'react'
-import { animated, useSpring } from 'react-spring'
+import React, { useEffect, useRef, useState } from 'react'
+import { animated, config, useSpring } from 'react-spring'
 import { ClipState } from '../../../../audio/clips'
 
 export default (props: { state: ClipState, hover?: boolean }) => {
+    const opacity = useLoadingOpacity(props.state)
+
     return (
-        <svg width='1em' height='1em' viewBox='-1 -1 2 2'>
+        <animated.svg width='1em' height='1em' viewBox='-1 -1 2 2' opacity={opacity}>
             <SprungSine moving={props.state.status === 'playing' || props.hover} />
-        </svg>
+        </animated.svg>
     )
 }
 
@@ -71,4 +73,24 @@ function sinePoints(startX: number) {
 
 function pathDataFromPoints(points: [number, number][]) {
     return d3.line().curve(d3.curveBasis)(points) as string
+}
+
+function useLoadingOpacity(clipState: ClipState) {
+    const active = clipState.status === 'loading'
+
+    const [targetOpacity, setTargetOpacity] = useState(1)
+
+    useEffect(() => {
+        active ? setTargetOpacity(0.5) : setTargetOpacity(1)
+    }, [active, setTargetOpacity])
+
+    const toggleOpacity = () => setTargetOpacity(targetOpacity === 0.4 ? 0.75 : 0.4)
+
+    const { opacity } = useSpring({
+        opacity: targetOpacity,
+        onRest: () => { if (active) toggleOpacity() },
+        config: config.stiff
+    })
+
+    return opacity
 }
