@@ -3,7 +3,7 @@ import * as d3 from 'd3-shape'
 import { timer } from 'd3-timer'
 import _ from 'lodash'
 import React, { useEffect, useRef } from 'react'
-import { animated, config, useSpring } from 'react-spring'
+import { animated, useSpring } from 'react-spring'
 import { ClipState } from '../../../../audio/clips'
 
 export default (props: { state: ClipState, hover?: boolean }) => {

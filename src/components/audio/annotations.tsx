@@ -2,7 +2,7 @@ import { Box } from 'grommet'
 import React, { ComponentProps, ReactNode, useState } from 'react'
 import { useHover } from 'react-use-gesture'
 import styled from 'styled-components'
-import { ClipResult, ClipState, isActive, useClip } from '../../audio/clips'
+import { ClipResult, ClipState, useClip } from '../../audio/clips'
 import WavyClip from '../animations/svgElementAnimations/clip/WavyClip'
 
 export function AnnotationView(props: { clipState: ClipState, children?: ReactNode } & ComponentProps<typeof StyledBox>) {
