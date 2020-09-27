@@ -1,18 +1,27 @@
-import { Box, Stack } from 'grommet'
-import React, { ComponentProps, ReactNode } from 'react'
+import { Box } from 'grommet'
+import React, { ComponentProps, ReactNode, useState } from 'react'
+import { useHover } from 'react-use-gesture'
 import styled from 'styled-components'
 import { ClipResult, ClipState, isActive, useClip } from '../../audio/clips'
+import WavyClip from '../animations/svgElementAnimations/clip/WavyClip'
 
-export function AnnotationView(props: { clipState: ClipState, children?: ReactNode } & ComponentProps<typeof StyledStack>) {
+export function AnnotationView(props: { clipState: ClipState, children?: ReactNode } & ComponentProps<typeof StyledBox>) {
+    const [hovering, setHovering] = useState(false)
+    const hoverBindings = useHover(({ hovering }) => setHovering(hovering), { passive: true })
+
     return (
-        <StyledStack anchor='top-right' {...props}>
-            {props.children}
-            {isActive(props.clipState) && <Clip state={props.clipState} />}
-        </StyledStack>
+        <Box {...hoverBindings()}>
+            <StyledBox direction='row' {...props}>
+                {props.children}
+                <AnnotationStatus clipState={props.clipState}>
+                    <WavyClip state={props.clipState} hover={hovering} />
+                </AnnotationStatus>
+            </StyledBox>
+        </Box>
     )
 }
 
-const StyledStack = styled(Stack)`
+const StyledBox = styled(Box)`
   &:focus {
       outline: none;
   }
@@ -20,23 +29,41 @@ const StyledStack = styled(Stack)`
   cursor: default;
 `
 
-function Clip(props: { state: ClipState }) {
-    return <Box role='status' round background={props.state.status === 'playing' ? 'accent-4' : 'accent-2'} pad='xxsmall' />
+function AnnotationStatus(props: { clipState: ClipState, children?: ReactNode }) {
+    return (
+        <Box
+            role='status'
+            aria-label={`Audio annotation: ${props.clipState.status}`}
+        >
+            {props.children}
+        </Box>
+    )
 }
 
 export function Annotation(props: { children?: ReactNode }) {
     const clip = useClip()
-    const bindings = annotationInteraction(clip)
+    const bindings = useAnnotationInteraction(clip)
 
     return (
         <AnnotationView {...bindings} tabIndex={0} clipState={clip}>{props.children}</AnnotationView>
     )
 }
 
-function annotationInteraction(clip: ClipResult) {
+function useAnnotationInteraction(clip: ClipResult) {
+    const [focussed, setFocussed] = useState<'just-focussed' | boolean>(false)
+
+    const toggle = () => clip.status === 'playing' ? clip.pause() : clip.play()
+
     const bindings = {
-        onFocus: () => clip.play(),
-        onBlur: () => clip.stop(),
+        onClick: () => {
+            if (focussed === 'just-focussed') {
+                setFocussed(true)
+            } else if (focussed) {
+                toggle()
+            }
+        },
+        onFocus: () => { clip.play(); setFocussed('just-focussed') },
+        onBlur: () => { clip.stop(); setFocussed(false) },
     }
 
     return bindings
