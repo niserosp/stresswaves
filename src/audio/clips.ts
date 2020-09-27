@@ -15,7 +15,7 @@ export type ClipState = {
 export type ClipResult = ClipState & { play: PlayFunction } & Pick<ExposedData, 'pause' | 'stop'>
 
 export function useClip(): ClipResult {
-    const [play, { pause, stop, isPlaying, sound }] = useSound('/test.mp3', { preload: true } as any)
+    const [play, { pause, stop, isPlaying, sound }] = useSound('/test.mp3', { html5: true } as any)
 
     const progress = useAudioProgress(sound)
 
