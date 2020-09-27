@@ -2,7 +2,7 @@ import { scaleLinear } from 'd3-scale'
 import * as d3 from 'd3-shape'
 import { timer } from 'd3-timer'
 import _ from 'lodash'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { animated, config, useSpring } from 'react-spring'
 import { ClipState } from '../../../../audio/clips'
 
@@ -33,27 +33,48 @@ function Sine(props: { speed: number }) {
         config: { immediate: true, native: true }
     }))
 
-    const ref = useRef({ x: 0 })
+    const [sineMover, setSineMover] = useState(null as null | SineMover)
+
+    useEffect(() => setSineMover(new SineMover(0, 2)), [setSineMover])
 
     useEffect(() => {
+        if (!sineMover) return
+
         let lastTime = null as null | number
-        const cycleLength = 2
-        const moveScale = scaleLinear().domain([0, 1000 / (props.speed * 1000)]).range([0, cycleLength])
 
         const animation = timer((elapsed: number) => {
             const dt = lastTime ? elapsed - lastTime : 0
-            const nextX = ref.current.x + (props.speed ? moveScale(dt) : 0)
-
+            const nextX = sineMover.next(dt, props.speed)
             setSpring({ x: nextX })
 
-            ref.current = { x: nextX }
             lastTime = elapsed
         })
 
         return () => animation.stop()
-    }, [setSpring, props.speed])
+    }, [setSpring, props.speed, sineMover])
 
     return <animated.path d={x.interpolate(sinePathData)} fill='none' strokeWidth='0.003em' stroke='white' />
+}
+
+class SineMover {
+    private readonly cycleLength: number
+    private x: number
+
+    constructor(startX: number, cycleLength: number) {
+        this.cycleLength = cycleLength
+        this.x = startX
+    }
+
+    next(deltaTime: number, speed: number): number {
+        const moveScale = scaleLinear().domain([0, 1000 / (speed * 1000)]).range([0, this.cycleLength])
+
+        const nextX = this.x + (speed ? moveScale(deltaTime) : 0)
+        this.x = nextX
+
+        return nextX
+    }
+
+    reset() { this.x = 0 }
 }
 
 function sinePathData(x: number) {
