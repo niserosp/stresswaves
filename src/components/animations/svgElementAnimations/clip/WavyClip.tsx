@@ -9,7 +9,7 @@ import { ClipState } from '../../../../audio/clips'
 export default (props: { state: ClipState, hover?: boolean }) => {
     return (
         <svg width='1em' height='1em' viewBox='-1 -1 2 2'>
-            <SprungSine moving={props.hover} />
+            <SprungSine moving={props.state.status === 'playing' || props.hover} />
         </svg>
     )
 }
