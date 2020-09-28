@@ -60,7 +60,7 @@ function AnimatedEmoji(props: { emoji: Emoji } & Omit<ComponentProps<typeof anim
 }
 
 function useRandomFadeInSprings(n: number, active: boolean) {
-    const [springs, setSprings] = useSprings(n, index => ({ opacity: 0, config: { native: true } }))
+    const [springs, setSprings] = useSprings(n, index => ({ from: { opacity: 0 } }))
 
     useRandomlyFadeInSpring(n, setSprings as any, active)
 

@@ -12,7 +12,7 @@ export default function useWavesAnimationComponent(props: { pullApart: boolean }
     return (
         <g>
             {trail.map(({ d }, index) => {
-                const transform = yScale.interpolate(y => `translate(0, ${y * (index - 3)})`)
+                const transform = yScale.to(y => `translate(0, ${y * (index - 3)})`)
                 return (
                     <animated.path
                         transform={transform}
@@ -32,7 +32,7 @@ function useWavesAnimation(active: boolean) {
 
     const [trail, setSpring] = useTrail<{ d: string }>(6, () => ({
         d: noWave,
-        config: defaultConfig
+        config: defaultConfig,
     }))
 
     useInterval(() => {
