@@ -46,25 +46,16 @@ export function Annotation(props: { children?: ReactNode }) {
     const bindings = useAnnotationInteraction(clip)
 
     return (
-        <AnnotationView {...bindings} tabIndex={0} clipState={clip}>{props.children}</AnnotationView>
+        <AnnotationView {...bindings} role='button' tabIndex={0} clipState={clip}>{props.children}</AnnotationView>
     )
 }
 
 function useAnnotationInteraction(clip: ClipResult) {
-    const [focussed, setFocussed] = useState<'just-focussed' | boolean>(false)
-
     const toggle = () => clip.status === 'playing' ? clip.pause() : clip.play()
 
     const bindings = {
-        onClick: () => {
-            if (focussed === 'just-focussed') {
-                setFocussed(true)
-            } else if (focussed) {
-                toggle()
-            }
-        },
-        onFocus: () => { clip.play(); setFocussed('just-focussed') },
-        onBlur: () => { clip.stop(); setFocussed(false) },
+        onClick: toggle,
+        onBlur: () => { clip.stop() },
     }
 
     return bindings

@@ -1,8 +1,8 @@
 import { scaleLinear } from 'd3-scale'
 import * as d3 from 'd3-shape'
-import { timer } from 'd3-timer'
+import { interval } from 'd3-timer'
 import _ from 'lodash'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { animated, config, useSpring } from 'react-spring'
 import { ClipState } from '../../../../audio/clips'
 
@@ -33,22 +33,14 @@ function Sine(props: { speed: number }) {
         config: { immediate: true, native: true }
     }))
 
-    const [sineMover, setSineMover] = useState(null as null | SineMover)
-
-    useEffect(() => setSineMover(new SineMover(0, 2)), [setSineMover])
+    const sineMover = useRef(new SineMover(0, 2)).current
 
     useEffect(() => {
-        if (!sineMover) return
-
-        let lastTime = null as null | number
-
-        const animation = timer((elapsed: number) => {
-            const dt = lastTime ? elapsed - lastTime : 0
+        const animation = interval((elapsed: number) => {
+            const dt = 17
             const nextX = sineMover.next(dt, props.speed)
             setSpring({ x: nextX })
-
-            lastTime = elapsed
-        })
+        }, 17)
 
         return () => animation.stop()
     }, [setSpring, props.speed, sineMover])
@@ -73,8 +65,6 @@ class SineMover {
 
         return nextX
     }
-
-    reset() { this.x = 0 }
 }
 
 function sinePathData(x: number) {
