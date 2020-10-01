@@ -14,10 +14,10 @@ export type ClipState = {
 
 export type ClipResult = ClipState & { play: PlayFunction } & Pick<ExposedData, 'pause' | 'stop'>
 
-export function useClip(): ClipResult {
+export function useClip(href: string, config?: { loop?: boolean }): ClipResult {
     const [loaded, setLoaded] = useState(false)
-    const [play, { pause, stop, isPlaying, sound }] = useSound('/test.mp3', {
-        html5: true, preload: true, onload: () => setLoaded(true)
+    const [play, { pause, stop, isPlaying, sound }] = useSound(href, {
+        html5: true, preload: true, onload: () => setLoaded(true), ...config
     } as any)
 
     const progress = useAudioProgress(sound)
@@ -48,3 +48,18 @@ function useAudioProgress(howl?: Howl) {
 
     return progress
 }
+
+export class Clips {
+    folder: string
+
+    constructor(folder: string) {
+        this.folder = folder
+    }
+
+    get(name: string) {
+        const maybeSlash = this.folder[this.folder.length - 1] === '/' ? '' : '/'
+        return `${this.folder}${maybeSlash}${name}.mp3`
+    }
+}
+
+export const clips = new Clips('/clips')

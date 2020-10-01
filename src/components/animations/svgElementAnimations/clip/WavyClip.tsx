@@ -1,15 +1,16 @@
 import * as d3 from 'd3-shape'
 import _ from 'lodash'
-import React, { useEffect } from 'react'
-import { animated, config, useSpring } from 'react-spring'
+import React from 'react'
+import { animated, useSpring } from 'react-spring'
 import { ClipState } from '../../../../audio/clips'
+import { useLoadingOpacity } from './hooks'
 
 export default (props: { state: ClipState, hover?: boolean }) => {
     const opacity = useLoadingOpacity(props.state)
 
     return (
         <animated.svg width='1em' height='1em' viewBox='-1 -1 2 2' opacity={opacity}>
-            <SprungSine moving={props.state.status === 'playing' || props.hover} />
+            <SprungSine moving={props.state.status === 'playing' || (props.hover && props.state.status !== 'loading')} />
         </animated.svg>
     )
 }
@@ -28,7 +29,7 @@ const AnimatedSine = animated(Sine)
 function Sine(props: { speed: number }) {
     const points = useSinePoints(props.speed)
 
-    return <animated.path d={points.to(points => naturalPathDataFromPoints(points))} fill='none' strokeWidth='0.003em' stroke='white' />
+    return <animated.path d={points.to(naturalPathDataFromPoints)} fill='none' strokeWidth='0.003em' stroke='white' />
 }
 
 function useSinePoints(speed: number) {
@@ -54,30 +55,4 @@ function sinePoints(startX: number, step: number) {
 
 function naturalPathDataFromPoints(points: [number, number][]) {
     return d3.line().curve(d3.curveNatural)(points) as string
-}
-
-function stepPathDataFromPoints(points: [number, number][]) {
-    return d3.line().curve(d3.curveStep)(points) as string
-}
-
-function useLoadingOpacity(clipState: ClipState) {
-    const active = clipState.status === 'loading'
-
-    const [{ opacity }, setSpring] = useSpring(() => ({
-        from: { opacity: 0.75 },
-        config: config.stiff
-    }))
-
-    useEffect(() => {
-        if (active) {
-            setSpring({
-                to: [{ opacity: 0.4 }, { opacity: 0.75 }],
-                loop: true
-            })
-        } else {
-            setSpring({})
-        }
-    }, [active, setSpring])
-
-    return opacity
 }

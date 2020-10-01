@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { Text } from 'grommet'
 import React from 'react'
 import { ClipState } from '../../audio/clips'
-import { AnnotationView } from './annotations'
+import { WavyAnnotationView } from './annotations'
 
 describe('Creating a visible annotation', () => {
     describe('When we create Text', () => {
@@ -13,7 +13,7 @@ describe('Creating a visible annotation', () => {
                     status: 'playing',
                     progress: 20
                 }
-                render(<AnnotationView clipState={clipState}>{text}</AnnotationView>)
+                render(<WavyAnnotationView clipState={clipState}>{text}</WavyAnnotationView>)
             })
 
             it('Then a status is displayed with ARIA label', () => {
@@ -29,7 +29,7 @@ describe('Creating a visible annotation', () => {
                     status: 'paused',
                     progress: 0
                 }
-                render(<AnnotationView clipState={clipState}>{text}</AnnotationView>)
+                render(<WavyAnnotationView clipState={clipState}>{text}</WavyAnnotationView>)
             })
 
             it('Then a status is displayed with ARIA label', () => {

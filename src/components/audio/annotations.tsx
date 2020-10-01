@@ -4,25 +4,47 @@ import { isMobile } from 'react-device-detect'
 import { useHover } from 'react-use-gesture'
 import styled from 'styled-components'
 import { ClipResult, ClipState, useClip } from '../../audio/clips'
+import { FlowerClip } from '../animations/svgElementAnimations/clip/FlowerClip'
 import WavyClip from '../animations/svgElementAnimations/clip/WavyClip'
 
-export function AnnotationView(props: { clipState: ClipState, children?: ReactNode } & ComponentProps<typeof StyledBox>) {
-    const [hovering, setHovering] = useState(false)
-    const hoverBindings = useHover(({ hovering }) => !isMobile && setHovering(hovering), { passive: true })
+export function WavyAnnotationView(props: { clipState: ClipState, children?: ReactNode } & ComponentProps<typeof NoFocusBox>) {
+    const [hovering, hoverBindings] = useIsHovering()
 
     return (
         <Box {...hoverBindings()}>
-            <StyledBox direction='row' {...props}>
+            <NoFocusBox direction='row' {...props}>
                 {props.children}
                 <AnnotationStatus clipState={props.clipState}>
                     <WavyClip state={props.clipState} hover={hovering} />
                 </AnnotationStatus>
-            </StyledBox>
+            </NoFocusBox>
         </Box>
     )
 }
 
-const StyledBox = styled(Box)`
+function FlowerAnnotationView(props: { children?: ReactNode, clipState: ClipState } & ComponentProps<typeof NoFocusBox>) {
+    const [hovering, hoverBindings] = useIsHovering()
+
+    return (
+        <Box {...hoverBindings()}>
+            <NoFocusBox direction='row' {...props}>
+                {props.children}
+                <AnnotationStatus clipState={props.clipState} >
+                    <FlowerClip state={props.clipState} hovering={hovering} />
+                </AnnotationStatus>
+            </NoFocusBox>
+        </Box>
+    )
+}
+
+function useIsHovering() {
+    const [hovering, setHovering] = useState(false)
+    const hoverBindings = useHover(({ hovering }) => !isMobile && setHovering(hovering), { passive: true })
+
+    return [hovering, hoverBindings] as [typeof hovering, typeof hoverBindings]
+}
+
+const NoFocusBox = styled(Box)`
   &:focus {
       outline: none;
   }
@@ -41,12 +63,21 @@ function AnnotationStatus(props: { clipState: ClipState, children?: ReactNode })
     )
 }
 
-export function Annotation(props: { children?: ReactNode }) {
-    const clip = useClip()
+export function WavyAnnotation(props: { href: string, children?: ReactNode }) {
+    const clip = useClip(props.href)
     const bindings = useAnnotationInteraction(clip)
 
     return (
-        <AnnotationView {...bindings} role='button' tabIndex={0} clipState={clip}>{props.children}</AnnotationView>
+        <WavyAnnotationView {...bindings} role='button' tabIndex={0} clipState={clip}>{props.children}</WavyAnnotationView>
+    )
+}
+
+export function FlowerAnnotation(props: { href: string, children?: ReactNode, loop?: boolean }) {
+    const clip = useClip(props.href, { loop: props.loop })
+    const bindings = useAnnotationInteraction(clip)
+
+    return (
+        <FlowerAnnotationView {...bindings} clipState={clip}>{props.children}</FlowerAnnotationView>
     )
 }
 
