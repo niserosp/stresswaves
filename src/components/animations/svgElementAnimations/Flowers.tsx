@@ -30,10 +30,12 @@ function useFlowers(active: boolean, amount: number) {
                 await animate({ to: { opacity: maxOpacity, growth: 1 } })
             }
             while (active) {
+                await animate({
+                    to: { opacity: 0, growth: 0 },
+                })
                 randomiseAt(index)
                 await animate({
-                    to: [{ opacity: maxOpacity, growth: 1 }, { opacity: 0, growth: 0 }],
-                    reset: true,
+                    to: { opacity: maxOpacity, growth: 1 },
                     delay: _.random(0, 50),
                     config: { tension: _.random(50, 100) },
                 })
@@ -63,33 +65,54 @@ const Flower = animated((props: {
     opacity: number,
     growth: number
 }) => {
-    const gradientId = uniqueId()
+    const gradientIdA = uniqueId()
+    const gradientIdB = uniqueId()
 
     return (
         <g>
             <defs>
-                <radialGradient id={gradientId}>
-                    <stop offset={`${props.growth * 20}%`} stopColor={props.color} />
+                <radialGradient id={gradientIdA}>
+                    <stop offset={`${props.growth * 30}%`} stopColor={props.color} />
+                    <stop offset="100%" stopColor="transparent" />
+                </radialGradient>
+                <radialGradient id={gradientIdB}>
+                    <stop offset={`${props.growth * 30}%`} stopColor='purple' />
                     <stop offset="100%" stopColor="transparent" />
                 </radialGradient>
             </defs>
             <g
                 transform={`translate(${props.position[0]}, ${props.position[1]}) scale(${props.size * 2})`}
                 opacity={props.opacity}
-                fill={`url(#${gradientId})`}
                 strokeWidth={0.01}
             >
-                {_.range(0, 360, 45).map(rotation => <Petal rotation={rotation + props.growth * 10} length={1 / Math.log(props.growth / 2)} />)}
+                {_.range(0, 360, 45).map(rotation => (
+                    <Petal
+                        rotation={rotation + props.growth * 10}
+                        length={1 / Math.log(props.growth / 2)}
+                        color={`url(#${gradientIdA})`}
+                    />
+                ))}
+                {_.range(22, 382, 45).map(rotation => (
+                    <Petal
+                        rotation={rotation + props.growth * 10}
+                        length={1 / Math.log(props.growth / 2)}
+                        color={`url(#${gradientIdB})`}
+                    />
+                ))}
             </g>
         </g>
     )
 })
 
-function Petal(props: { rotation?: number, length: number }) {
+function Petal(props: { rotation?: number, length: number, color: string }) {
     const closedCurve = line().curve(curveCardinal.tension(0.0))
 
     return (
-        <path d={closedCurve([[0.0, 0.0], [0.5 * props.length, 0.25 * props.length], [1 * props.length, 0 * props.length]]) as string} transform={`rotate(${props.rotation})`} />
+        <path
+            d={closedCurve([[0.0, 0.0], [0.5 * props.length, 0.25 * props.length], [1 * props.length, 0 * props.length]]) as string}
+            transform={`skewX(20) rotate(${props.rotation})`}
+            fill={props.color}
+        />
     )
 }
 
