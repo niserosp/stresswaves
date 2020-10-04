@@ -17,7 +17,7 @@ const theme: ThemeType = {
     },
     font: {
       family: 'Quicksand',
-    }
+    },
   },
 }
 
