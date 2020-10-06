@@ -1,7 +1,7 @@
 import { interpolateBasis, quantize } from "d3-interpolate"
 import _ from "lodash"
 import * as math from "mathjs"
-import { pi, tau } from "mathjs"
+import { tau } from "mathjs"
 
 export type Point = [number, number]
 export type Points = Point[]

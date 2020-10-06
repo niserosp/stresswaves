@@ -1,10 +1,10 @@
 import { curveCardinal, line } from 'd3-shape'
-import { interval, timer } from 'd3-timer'
+import { timer } from 'd3-timer'
 import _ from 'lodash'
 import * as math from 'mathjs'
-import { ArrayNodeDependencies, sin } from 'mathjs'
+import { sin } from 'mathjs'
 import React, { useEffect, useState } from 'react'
-import { angleAt, bisectingAngle, interpolateCurve, Point, Points, vector, vectorFromTo } from '../../../lib/geometry'
+import { bisectingAngle, interpolateCurve, Point, Points, vector, vectorFromTo } from '../../../lib/geometry'
 
 export default function VibratingStrings() {
     return (
