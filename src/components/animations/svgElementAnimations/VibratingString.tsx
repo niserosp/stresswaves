@@ -8,16 +8,16 @@ import React from 'react'
 import { animated, Interpolation, SpringValue, to, useSpring } from 'react-spring'
 import { bisectingAngle, interpolateCurve, Point, Points, vector, vectorFromTo } from '../../../lib/geometry'
 
-export default function VibratingStrings() {
+export default function VibratingStrings(props: { moving?: boolean }) {
     return (
         <g>
-            <VibratingString points={[[-1, 0], [1, 0]]} density={20} />
+            <VibratingString moving={props.moving} points={[[-1, 0], [1, 0]]} density={20} />
         </g>
     )
 }
 
-function VibratingString(props: { points: Points, density: number }) {
-    const offsets = useVibratingOffsets(props.density)
+function VibratingString(props: { moving?: boolean, points: Points, density: number }) {
+    const offsets = useVibratingOffsets(props.density, Boolean(props.moving))
 
     return <FluctuatedCurve controlPoints={props.points} offsets={offsets as any} />
 }
@@ -27,36 +27,38 @@ const FluctuatedCurve = animated((props: { controlPoints: Points, offsets: numbe
     return <path d={pathData(offsetPoints)} />
 })
 
-function useVibratingOffsets(n: number) {
-    const centerOfMass = useMovingCenterOfMass(n)
-    return useVibrationsAroundCenter(n, centerOfMass)
+function useVibratingOffsets(n: number, active: boolean) {
+    const centerOfMass = useMovingCenterOfMass(n, active)
+    return useVibrationsAroundCenter(n, centerOfMass, active)
 }
 
-function useMovingCenterOfMass(n: number) {
+function useMovingCenterOfMass(n: number, active: boolean) {
     const { center } = useSpring({
         from: { center: -10 },
         to: { center: n - 1 },
         loop: true,
+        pause: !active,
         config: { mass: 20, tension: 50, clamp: true }
     })
 
     return center
 }
 
-function useVibrationsAroundCenter(n: number, center: SpringValue<number>): Interpolation<number[], number[]> {
-    const waveOffsets = useWave(n)
+function useVibrationsAroundCenter(n: number, center: SpringValue<number>, active: boolean): Interpolation<number[], number[]> {
+    const waveOffsets = useWave(n, active)
     return to([waveOffsets, center] as [typeof waveOffsets, typeof center], (waveOffsets, center) => applyAmplitudeCurve(center, waveOffsets))
 }
 
-function useWave(n: number) {
+function useWave(n: number, active: boolean) {
     const { x } = useSpring({
         from: { x: 0 },
         to: { x: 2 },
         loop: true,
+        pause: !active,
         config: { duration: 3000 }
     })
 
-    return x.to(x => _.range(0, n).map(y => sin(x + y) / 16))
+    return x.to(x => _.range(0, n).map(y => sin((x + y) * 4) / 16))
 }
 
 function applyAmplitudeCurve(center: number, offsets: number[]) {
