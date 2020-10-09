@@ -17,6 +17,7 @@ export default function LoadingStrings(props: { children?: ReactNode }) {
 				return state;
 		}
 	};
+	// eslint-disable-next-line
 	const [ loadingCount, dispatch ] = useReducer(reducer, 0);
 
 	return (
