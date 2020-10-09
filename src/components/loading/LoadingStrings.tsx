@@ -23,7 +23,7 @@ export default function LoadingStrings(props: { children?: ReactNode }) {
 		<LoadingContext.Provider value={dispatch}>
 			<Stack fill>
 				<AnimatedDepthStyledSVG
-					depth={loadingCount ? -2 : -6}
+					depth={-2}
 					width="100%"
 					height="100%"
 					stroke="#76B7B6"
@@ -32,7 +32,7 @@ export default function LoadingStrings(props: { children?: ReactNode }) {
 					fill="none"
 					preserveAspectRatio="none"
 				>
-					<VibratingStrings moving={Boolean(loadingCount)} />
+					<VibratingStrings moving={true} />
 				</AnimatedDepthStyledSVG>
 				<Box fill>{props.children}</Box>
 			</Stack>
