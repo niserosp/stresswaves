@@ -6,6 +6,9 @@ on:
     types: [closed]
     branches:
       - master
+  push:
+    branches:
+      - master
 
 jobs:
   deploy:
@@ -19,3 +22,4 @@ jobs:
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASSWORD }}
           script: cd ${{ secrets.SERVER_REPO_PATH }} && git pull && echo ${{ secrets.PASSWORD }} | sudo -S docker-compose --force-recreate --build up
+          debug: true
