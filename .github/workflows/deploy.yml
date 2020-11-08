@@ -1,8 +1,12 @@
 name: deploy
 
 on:
+  workflow_dispatch:
+    ref: 'refs/heads/master'
   pull_request:
     types: [closed]
+    branches:
+      - master
 
 jobs:
   deploy:
