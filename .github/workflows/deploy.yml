@@ -16,10 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Push to server
-        uses: appleboy/ssh-action@master
+        uses: JimCronqvist/action-ssh@master
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.USER }}
-          password: ${{ secrets.PASSWORD }}
-          script: cd ${{ secrets.SERVER_REPO_PATH }} && git pull && echo ${{ secrets.PASSWORD }} | sudo -S docker-compose --force-recreate --build up
-          debug: true
+          hosts: ${{ secrets.SERVER_IP }}
+          privateKey: ${{ secrets.KEY }}
+          command: |
+            cd ${{ secrets.SERVER_REPO_PATH }}
+            git pull
+            echo ${{ secrets.PASSWORD }} | sudo -S docker-compose --force-recreate --build up
