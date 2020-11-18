@@ -1,3 +1,4 @@
+import { createSlice } from '@reduxjs/toolkit';
 import { Box, Stack } from 'grommet';
 import React, { ComponentProps, createContext, ReactNode, Suspense, useContext, useEffect, useReducer } from 'react';
 import { animated, useSpring } from 'react-spring';
@@ -6,18 +7,17 @@ import VibratingStrings from '../animations/svgElementAnimations/VibratingString
 
 const LoadingContext = createContext((action: any) => {});
 
+const loadingSlice = createSlice({
+	name: 'loading',
+	initialState: 0,
+	reducers: {
+		loading: (state) => state + 1,
+		done: (state) => state - 1
+	}
+});
+
 export default function LoadingStrings(props: { children?: ReactNode }) {
-	const reducer = (state: number, action: any) => {
-		switch (action) {
-			case 'LOADING':
-				return state + 1;
-			case 'DONE':
-				return state - 1;
-			default:
-				return state;
-		}
-	};
-	const [ loadingCount, dispatch ] = useReducer(reducer, 0);
+	const [ loadingCount, dispatch ] = useReducer(loadingSlice.reducer, 0);
 
 	return (
 		<LoadingContext.Provider value={dispatch}>
@@ -45,9 +45,9 @@ export function LoadingSuspense(props: { children?: ReactNode }) {
 
 	const Fallback = () => {
 		useEffect(() => {
-			dispatch('LOADING');
+			dispatch(loadingSlice.actions.loading);
 
-			return () => dispatch('DONE');
+			return () => dispatch(loadingSlice.actions.done);
 		});
 
 		return null;
