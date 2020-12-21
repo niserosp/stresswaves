@@ -1,0 +1,10 @@
+main#main {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: 0px 1px;
+
+	position: absolute;
+	left: 26px;
+	top: 106px;
+}

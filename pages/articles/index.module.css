@@ -1,0 +1,36 @@
+.link {
+	flex: none;
+	order: 0;
+	flex-grow: 0;
+	margin: 0px 0px;
+}
+
+.linkInnerDiv {
+	display: flex;
+	gap: 1em;
+	cursor: pointer;
+}
+
+.name {
+	font-family: Work Sans;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 20px;
+	line-height: 28px;
+	display: flex;
+	align-items: center;
+
+	color: rgba(0, 0, 0, 0.72);
+}
+
+.date {
+	font-family: Work Sans;
+	font-style: normal;
+	font-weight: 300;
+	font-size: 20px;
+	line-height: 28px;
+	display: flex;
+	align-items: center;
+
+	color: rgba(0, 0, 0, 0.72);
+}

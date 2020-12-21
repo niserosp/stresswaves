@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './Header.module.css';
+import { latestArticle } from './articles';
 
 export default function Header() {
 	return (
@@ -25,7 +26,7 @@ const Logo = () => {
 const Nav = () => {
 	return (
 		<nav id={styles.nav}>
-			<span>Latest</span>
+			<Link href={`/articles/${latestArticle().route}`}>Latest</Link>
 			<span>·</span>
 			<Link href="/articles">Articles</Link>
 		</nav>
