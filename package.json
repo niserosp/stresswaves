@@ -12,6 +12,7 @@
     "framer-motion": "^3.1.1",
     "next": "10.0.3",
     "ramda": "^0.27.1",
+    "random-js": "^2.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1"
   },
