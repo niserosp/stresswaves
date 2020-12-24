@@ -32,7 +32,12 @@
 	color: #000000;
 
 	flex: none;
-	order: 1;
 	flex-grow: 0;
 	margin: 25px 0px;
+}
+
+#about {
+	width: 100vw;
+	display: flex;
+	flex-direction: row-reverse;
 }

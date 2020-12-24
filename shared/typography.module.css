@@ -1,0 +1,41 @@
+.title {
+	font-family: Work Sans;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 24px;
+	line-height: 28px;
+	display: flex;
+	align-items: center;
+
+	color: rgba(0, 0, 0, 0.72);
+
+	flex: none;
+	flex-grow: 0;
+	margin: 0px 0px;
+}
+
+.subHeading {
+	font-family: Exo;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 18px;
+	line-height: 24px;
+	display: flex;
+	align-items: center;
+
+	color: rgba(0, 0, 0, 0.72);
+
+	flex: none;
+	flex-grow: 0;
+	margin: 0px 0px;
+}
+
+.text {
+	font-family: Nunito Sans;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 19px;
+
+	color: rgba(0, 0, 0, 0.72);
+}

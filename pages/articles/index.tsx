@@ -10,7 +10,7 @@ export default function Articles() {
 		<Main>
 			{articles.map((article) => {
 				return (
-					<Link href={`/articles/${article.route}`}>
+					<Link key={article.route} href={`/articles/${article.route}`}>
 						<div className={styles.linkInnerDiv}>
 							<span className={styles.name}>{article.name}</span>
 							<span className={styles.date}>{displayDate(article.unixDate)}</span>
