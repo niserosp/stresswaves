@@ -2,61 +2,23 @@
   "name": "stresswaves",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/d3-interpolate-path": "^2.0.0",
-    "@types/d3-scale": "^2.2.0",
-    "@types/d3-shape": "^1.3.2",
-    "@types/jest": "^24.9.1",
-    "@types/lodash": "^4.14.161",
-    "@types/mathjs": "^6.0.5",
-    "@types/node": "^12.12.62",
-    "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.9.8",
-    "@types/styled-components": "^5.1.3",
-    "d3-interpolate-path": "^2.2.1",
-    "d3-scale": "^3.2.2",
-    "d3-shape": "^2.0.0",
-    "grommet": "^2.15.0",
-    "lodash": "^4.17.20",
-    "mathjs": "^7.2.0",
-    "paths-js": "^0.4.11",
-    "react": "^16.13.1",
-    "react-device-detect": "^1.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
-    "react-spinners": "^0.9.0",
-    "react-spring": "^8.0.27",
-    "react-use-gesture": "^7.0.16",
-    "react-useinterval": "^1.0.2",
-    "styled-components": "^5.2.0",
-    "typescript": "^3.7.5"
-  },
   "scripts": {
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "date-fns": "^2.16.1",
+    "framer-motion": "^3.1.1",
+    "next": "10.0.3",
+    "ramda": "^0.27.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1"
   },
   "devDependencies": {
-    "source-map-explorer": "^2.5.0"
+    "@types/node": "^14.14.14",
+    "@types/ramda": "^0.27.34",
+    "@types/react": "^17.0.0",
+    "typescript": "^4.1.3"
   }
 }

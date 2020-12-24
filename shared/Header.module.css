@@ -1,0 +1,43 @@
+#header {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 25.5px;
+	gap: 25px;
+
+	position: absolute;
+	width: 375px;
+	height: 87px;
+	left: 0px;
+	top: 0px;
+}
+
+#logo {
+	flex: none;
+	order: 0;
+	flex-grow: 0;
+	margin: 10px 0px;
+}
+
+#nav {
+	font-family: Work Sans;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 21px;
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+
+	color: #000000;
+
+	flex: none;
+	flex-grow: 0;
+	margin: 25px 0px;
+}
+
+#about {
+	width: 100vw;
+	display: flex;
+	flex-direction: row-reverse;
+}
