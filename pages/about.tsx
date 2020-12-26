@@ -1,12 +1,24 @@
-import React from 'react';
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import React, { ReactNode } from 'react';
 import Main from '../shared/Main';
 import { chooseRandom } from '../shared/random';
 import { Title, Text } from '../shared/typography';
+import styles from './about.module.css';
 
 export default function About() {
 	return (
 		<Main>
 			<Title>About</Title>
+			<HueRotateFilterAnimation>
+				<Image
+					width={300}
+					height={300}
+					className={styles.floatRight}
+					src="/hollow-head.png"
+					alt="image of stresswaves"
+				/>
+			</HueRotateFilterAnimation>
 			<RandomAboutInfo />
 		</Main>
 	);
@@ -31,3 +43,11 @@ const FlashAnimationAbout = () => {
 };
 
 const aboutInfoComponents = [ LynchianAbout, FlashAnimationAbout ];
+
+const HueRotateFilterAnimation = (props: { children?: ReactNode }) => {
+	return (
+		<motion.div animate={{ filter: 'hue-rotate(360deg)' }} transition={{ duration: 5, loop: Infinity }}>
+			{props.children}
+		</motion.div>
+	);
+};

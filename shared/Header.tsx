@@ -13,7 +13,6 @@ export default function Header() {
 				<Logo />
 				<Nav />
 			</header>
-			<AboutLink />
 		</React.Fragment>
 	);
 }
@@ -34,31 +33,8 @@ const Nav = () => {
 			<Link href={`/articles/${latestArticle().route}`}>Latest</Link>
 			<span>·</span>
 			<Link href="/articles">Articles</Link>
+			<span>·</span>
+			<Link href="/about">About</Link>
 		</nav>
-	);
-};
-
-const AboutLink = () => {
-	const router = useRouter();
-
-	const motionVariants = {
-		full: { filter: 'saturate(1000%)' },
-		normal: { filter: 'saturate(100%)' }
-	};
-
-	return (
-		<div id={styles.about}>
-			<Link href="/about">
-				<motion.div
-					variants={motionVariants}
-					animate={router.asPath === '/about' ? 'full' : 'normal'}
-					whileHover={'full'}
-					initial={'normal'}
-					transition={{ duration: 1 }}
-				>
-					<Image src="/squares.png" alt="about" width={100} height={100} />
-				</motion.div>
-			</Link>
-		</div>
 	);
 };
