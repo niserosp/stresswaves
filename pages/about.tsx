@@ -6,7 +6,17 @@ import { chooseRandom } from '../shared/random';
 import { Title, Text } from '../shared/typography';
 import styles from './about.module.css';
 
-export default function About() {
+export const getServerSideProps = () => {
+	return {
+		props: {
+			aboutInfoName: chooseRandom(Object.keys(aboutInfoComponents))
+		}
+	};
+};
+
+export default function About(props: { aboutInfoName: keyof typeof aboutInfoComponents }) {
+	const AboutInfo = aboutInfoComponents[props.aboutInfoName];
+
 	return (
 		<Main>
 			<Title>About</Title>
@@ -19,15 +29,10 @@ export default function About() {
 					alt="image of stresswaves"
 				/>
 			</HueRotateFilterAnimation>
-			<RandomAboutInfo />
+			<AboutInfo />
 		</Main>
 	);
 }
-
-const RandomAboutInfo = () => {
-	const AboutInfo = chooseRandom(aboutInfoComponents);
-	return <AboutInfo />;
-};
 
 const LynchianAbout = () => {
 	return (
@@ -42,7 +47,7 @@ const FlashAnimationAbout = () => {
 	return <Text>Stresswaves is a frame from a 2004 flash animation.</Text>;
 };
 
-const aboutInfoComponents = [ LynchianAbout, FlashAnimationAbout ];
+const aboutInfoComponents = { lynch: LynchianAbout, flash: FlashAnimationAbout };
 
 const HueRotateFilterAnimation = (props: { children?: ReactNode }) => {
 	return (
