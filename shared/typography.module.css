@@ -39,3 +39,12 @@
 
 	color: rgba(0, 0, 0, 0.72);
 }
+
+@media screen and (min-width: 769px) {
+	.title {
+		font-size: 30px;
+	}
+	.text {
+		font-size: 18px;
+	}
+}
