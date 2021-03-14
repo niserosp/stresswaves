@@ -6,7 +6,7 @@ export type Tree = { name: string; children?: Tree[]; value?: number };
 
 export const AbstractionTree = (props: { data: Tree }) => {
   const hierarchy = d3.hierarchy(props.data);
-  hierarchy.sum((node) => node.value || 1).sort((a, b) => b.value - a.value);
+  hierarchy.sum((node) => node.value || 1);
   const d3tree = d3.tree<Tree>().size([100, 150])(hierarchy);
   return <TreeSVG tree={d3tree} />;
 };
@@ -73,18 +73,24 @@ export const AbstractionTreeExample = () => {
 };
 
 const TreeSVG = (props: { tree: d3.HierarchyPointNode<Tree> }) => {
-  const [x, setX] = useState(0);
+  const [stage, setStage] = useState(0);
   const cycle = () => {
-    setX((x) => (x + 75) % 225);
+    setStage((x) => (x + 1) % 4);
   };
+
+  const viewBox = stage < 3 ? `${-4 + stage * 75} 0 75 100` : `0 0 300 100`;
+
   return (
     <>
       <motion.svg
-        animate={{ viewBox: `${x - 4} 0 75 100` }}
+        animate={{
+          viewBox,
+          transition: { bounce: 0, delay: stage > 0 ? 0.5 : 0 },
+        }}
         initial={{ viewBox: "200 0 75 100" }}
       >
         <SVGTreeNodes tree={props.tree} />
-        <SVGTreePaths tree={props.tree} />
+        <SVGTreePaths tree={props.tree} depth={stage} />
       </motion.svg>
       <button onClick={cycle}>&gt;</button>
     </>
@@ -111,32 +117,39 @@ const SVGTreeNodes = (props: { tree: d3.HierarchyPointNode<Tree> }) => {
   );
 };
 
-const SVGTreePaths = (props: { tree: d3.HierarchyPointNode<Tree> }) => {
+const SVGTreePaths = (props: {
+  tree: d3.HierarchyPointNode<Tree>;
+  depth: number;
+}) => {
   return (
     <>
-      {props.tree.links().map((link) => {
-        return (
-          <path
-            key={`${link.source.x}${link.source.y}${link.target.x}${link.target.y}`}
-            d={d3.line().curve(d3.curveBasis)([
-              [link.source.y, link.source.x],
-              [
-                link.source.y + (link.target.y - link.source.y) / 3,
-                link.source.x,
-              ],
-              [
-                link.source.y + (link.target.y - link.source.y) / 1.5,
-                link.target.x,
-              ],
-              [link.target.y, link.target.x],
-            ])}
-            stroke="black"
-            strokeWidth={0.5}
-            opacity={0.1}
-            fill="none"
-          />
-        );
-      })}
+      {props.tree
+        .links()
+        .filter((link) => link.target.depth <= props.depth)
+        .map((link) => {
+          return (
+            <motion.path
+              key={`${link.source.x}${link.source.y}${link.target.x}${link.target.y}`}
+              d={d3.line().curve(d3.curveBasis)([
+                [link.source.y, link.source.x],
+                [
+                  link.source.y + (link.target.y - link.source.y) / 3,
+                  link.source.x,
+                ],
+                [
+                  link.source.y + (link.target.y - link.source.y) / 1.5,
+                  link.target.x,
+                ],
+                [link.target.y, link.target.x],
+              ])}
+              stroke="black"
+              strokeWidth={0.5}
+              animate={{ opacity: 0.1 }}
+              initial={{ opacity: 0.0 }}
+              fill="none"
+            />
+          );
+        })}
     </>
   );
 };
