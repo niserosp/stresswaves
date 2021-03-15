@@ -1,13 +1,14 @@
 import * as d3 from "d3";
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useMemo, useState } from "react";
+import { motion, useCycle } from "framer-motion";
+import produce from "immer";
 
 export type Tree = { name: string; children?: Tree[]; value?: number };
 
 export const AbstractionTree = (props: { data: Tree }) => {
   const hierarchy = d3.hierarchy(props.data);
   hierarchy.sum((node) => node.value || 1);
-  const d3tree = d3.tree<Tree>().size([100, 150])(hierarchy);
+  const d3tree = d3.tree<Tree>().nodeSize([4, 80])(hierarchy);
   return <TreeSVG tree={d3tree} />;
 };
 
@@ -73,48 +74,55 @@ export const AbstractionTreeExample = () => {
 };
 
 const TreeSVG = (props: { tree: d3.HierarchyPointNode<Tree> }) => {
-  const [stage, setStage] = useState(0);
-  const cycle = () => {
-    setStage((x) => (x + 1) % 4);
-  };
-
-  const viewBox = stage < 3 ? `${-4 + stage * 75} 0 75 100` : `0 0 300 100`;
+  const stages = [
+    { viewBox: "0 -50 300 100", delay: 0, displayDepth: Infinity },
+    { viewBox: "-25 -25 100 100", delay: 0.5, displayDepth: 0 },
+    { viewBox: "-50 -50 200 200", delay: 0.5, displayDepth: 1 },
+    { viewBox: "50 -50 210 210", delay: 0.5, displayDepth: 2 },
+    { viewBox: "300 0 75 100", delay: 0.5, displayDepth: 0 },
+  ];
+  const [stageProperties, cycle] = useCycle(...stages);
 
   return (
     <>
       <motion.svg
         animate={{
-          viewBox,
-          transition: { bounce: 0, delay: stage > 0 ? 0.5 : 0 },
+          viewBox: stageProperties.viewBox,
+          transition: { bounce: 0, delay: stageProperties.delay },
         }}
-        initial={{ viewBox: "200 0 75 100" }}
+        initial={{ viewBox: stages[0].viewBox }}
+        onTap={() => cycle()}
       >
         <SVGTreeNodes tree={props.tree} />
-        <SVGTreePaths tree={props.tree} depth={stage} />
+        <SVGTreePaths tree={props.tree} depth={stageProperties.displayDepth} />
       </motion.svg>
-      <button onClick={cycle}>&gt;</button>
     </>
   );
 };
 
 const SVGTreeNodes = (props: { tree: d3.HierarchyPointNode<Tree> }) => {
-  return (
-    <>
-      {props.tree.descendants().map((node) => {
+  const nodes = useMemo(
+    () =>
+      props.tree.descendants().map((node) => {
         return (
           <g
             key={`${node.x}${node.y}${node.value}`}
             transform={`translate(${node.y}, ${node.x})`}
           >
             <circle r={0.5} stroke="black" fill="white" opacity={0.1} />
-            <text fontSize="4" transform="translate(3, 2)">
+            <text
+              fontFamily="Overpass Mono"
+              fontSize="4"
+              transform="translate(2, 1)"
+            >
               {node.data.name}
             </text>
           </g>
         );
-      })}
-    </>
+      }),
+    [props.tree]
   );
+  return <>{nodes}</>;
 };
 
 const SVGTreePaths = (props: {
@@ -127,19 +135,15 @@ const SVGTreePaths = (props: {
         .links()
         .filter((link) => link.target.depth <= props.depth)
         .map((link) => {
+          const textWidth = link.source.data.name.length * 2.7;
+          const sourceY = link.source.y + textWidth;
           return (
             <motion.path
               key={`${link.source.x}${link.source.y}${link.target.x}${link.target.y}`}
               d={d3.line().curve(d3.curveBasis)([
-                [link.source.y, link.source.x],
-                [
-                  link.source.y + (link.target.y - link.source.y) / 3,
-                  link.source.x,
-                ],
-                [
-                  link.source.y + (link.target.y - link.source.y) / 1.5,
-                  link.target.x,
-                ],
+                [sourceY, link.source.x],
+                [sourceY + (link.target.y - sourceY) / 3, link.source.x],
+                [sourceY + (link.target.y - sourceY) / 1.5, link.target.x],
                 [link.target.y, link.target.x],
               ])}
               stroke="black"

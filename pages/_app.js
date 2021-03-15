@@ -1,3 +1,4 @@
+import 'tailwindcss/tailwind.css'
 import '../styles/globals.css'
 import Header from '../shared/Header'
 
