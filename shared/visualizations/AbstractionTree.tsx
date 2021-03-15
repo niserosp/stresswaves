@@ -79,7 +79,6 @@ const TreeSVG = (props: { tree: d3.HierarchyPointNode<Tree> }) => {
     { viewBox: "-25 -25 100 100", delay: 0.5, displayDepth: 0 },
     { viewBox: "-50 -50 200 200", delay: 0.5, displayDepth: 1 },
     { viewBox: "50 -50 210 210", delay: 0.5, displayDepth: 2 },
-    { viewBox: "300 0 75 100", delay: 0.5, displayDepth: 0 },
   ];
   const [stageProperties, cycle] = useCycle(...stages);
 
